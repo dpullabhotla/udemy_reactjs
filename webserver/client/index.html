@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>My First Component</title>
+    
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser.min.js"></script>
+</head>
+<body>
+  <div id="HelloMessage"></div>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+        <h1 class="page-header">Register</h1>
+        <div id="regForm"></div>
+    </div>
+  </div>
+  <script type="text/babel">
+   /* var HelloMessage = React.createClass({
+        sayMessage: function(){
+            alert(this.props.children);
+        },
+        render: function(){
+            return <div>
+            <h3>Hello, {this.props.word}!</h3>
+            <p>{this.props.children}</p>
+            <p><a href="#" onClick={this.sayMessage}>Click for message</a></p>
+            </div>;
+        }
+    });
+    
+   ReactDOM.render(
+        <HelloMessage word="Everyone">What are you up to?</HelloMessage>,
+        document.getElementById("HelloMessage")
+    );*/
+    
+    var RegForm = React.createClass({
+        register: function(e){
+        e.preventDefault();
+        var firstName = this.refs.firstName.value.trim();
+        var lastName = this.refs.lastName.value.trim();
+        var email = this.refs.email.value.trim();
+        
+        alert('Thank you'+firstName+' '+lastName+' for registering');
+        },
+        render: function(){
+            return <div>
+                 <form onSubmit={this.register}>
+                   <div className="form-group">
+                    <label htmlFor="firstName">First Name:</label>
+                    <input type="text" className="form-control"
+                      placeholder="First Name" ref="firstName"/>
+                    </div>
+                     <div className="form-group">
+                    <label htmlFor="lastName">Last Name:</label>
+                    <input type="text" className="form-control"
+                      placeholder="Last Name" ref="lastName"/>
+                    </div>
+                     <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input type="text" className="form-control"
+                      placeholder="Email" ref="email"/>
+                    </div>
+                    <input className="btn btn-primary" value="Submit"/>
+                 </form>
+                 </div>
+        }
+        });
+        ReactDOM.render(
+        <RegForm/>,
+        document.getElementById('regForm')
+        );
+  </script>
+</body>
+</html>
+     
+    
