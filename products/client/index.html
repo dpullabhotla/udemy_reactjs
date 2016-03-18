@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Web server</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://fb.me/react-0.14.0.js"></script>
+		<script src="https://fb.me/react-dom-0.14.0.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser.min.js"></script>
+		<style>
+			body{margin-top: 40px}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="products"></div>
+				</div>
+			</div>
+		</div>
+
+	  <script type="text/babel">
+	    var Products = React.createClass({
+			loadProductData: function(){
+				$.ajax({
+					url: this.state.url,
+					dataType: "json",
+					cache: false,
+					success: function(data){
+						console.log(data);
+						this.setState({productData: data});
+					}.bind(this),
+					error: function(xhr, status, err){
+					 console.log(err);
+					}.bind(this)
+				});
+			},
+			getDefaultprops: function(){
+				return {
+					interval: 2000
+				}
+			},
+			getInitialState: function(){
+				return{
+					productData: [],
+					url: '/api/products'
+				}
+			},
+			componentDidMount: function(){
+				this.loadProductData();
+			},
+			render:function(){
+			return(
+			<div>
+				<div className="row">
+					<div className="col-md-6">
+						<ProductForm />
+					</div>
+					<div className="col-md-6">
+						<ProductList productData={this.state.productData}/>
+					</div>
+
+				</div>
+			</div>
+			)
+			}
+	    });
+		var ProductForm = React.createClass({
+			render:function(){
+			return(
+			<div>
+				<h3>Add Product</h3>
+				<form>
+				</form>
+			</div>
+			)
+			}
+	    });
+		var ProductList = React.createClass({
+		  render: function(){
+			var productNodes = this.props.productData.map(function(product, index){
+				var productFields = {
+						id: product.id,
+						name: product.name,
+						description: product.description,
+						price: product.price,
+						buy_url: product.buy_url,
+						image_url: product.image_url
+					}
+			return(
+					<Product productFields={productFields}/>
+				)
+			});
+			return(
+			<div>
+				{productNodes}
+			</div>
+			)
+			}
+	    });
+		var Product = React.createClass({
+			render: function(){
+			return(
+				<div className="well product">
+					<div className="row">
+						<div className="col-md-4">
+						<img style={{width:'100%'}} src={this.props.productFields.image_url}/>
+						</div>
+						<div className="col-md-8">
+						<h3>{this.props.productFields.name}</h3>
+						</div>
+					</div>
+
+					<p>{this.props.productFields.description}</p>
+				</div>
+			)
+			}
+		})
+		  ReactDOM.render(
+		  <Products />,
+		  document.getElementById('products')
+		  );
+	    </script>
+	</body>
+</html>
